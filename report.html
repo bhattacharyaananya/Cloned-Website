@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Report Suspicious Website</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #2c3e50;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .top-buttons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .top-buttons a {
+      text-decoration: none;
+      padding: 8px 12px;
+      margin-left: 10px;
+      background-color: #3498db;
+      color: white;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .top-buttons a:hover {
+      background-color: #2980b9;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    input, textarea {
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #e74c3c;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #c0392b;
+    }
+
+    .success-message {
+      margin-top: 20px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top-buttons">
+      <a href="index.html">Home</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <h1>🚨 Report a Suspicious Website</h1>
+    <p>Help us identify phishing or clone sites</p>
+  </header>
+
+  <main>
+    
+    <form id="reportForm">
+  <label for="url">Suspicious URL:</label>
+  <input type="text" id="url" name="url" placeholder="https://suspicious-site.com" required>
+  <button type="submit">Submit Report</button>
+</form>
+
+<button onclick="downloadCSV()" style="margin-top:10px;">Download Reports</button>
+
+<div id="message"></div>
+
+<script>
+  function saveReport(url) {
+    const reports = JSON.parse(localStorage.getItem("reports") || "[]");
+    reports.push({ url, timestamp: new Date().toISOString() });
+    localStorage.setItem("reports", JSON.stringify(reports));
+  }
+
+  function downloadCSV() {
+    const reports = JSON.parse(localStorage.getItem("reports") || "[]");
+    if (reports.length === 0) {
+      alert("No reports to download.");
+      return;
+    }
+    
+    let csv = "Suspicious URL,Reported At\n";
+    reports.forEach(r => {
+      csv += `"${r.url}","${r.timestamp}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "suspicious_reports.csv";
+    document.body.appendChild(a);  // Append anchor to body
+    a.click();
+    a.remove();  // Remove it after click
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById("reportForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const urlInput = document.getElementById("url").value.trim();
+    if (!urlInput) return;
+    saveReport(urlInput);
+    document.getElementById("message").textContent = "✅ Report submitted successfully! Thank you.";
+    this.reset();
+  });
+</script>
+
+
+</body>
+</html>

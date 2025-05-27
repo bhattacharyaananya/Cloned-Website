@@ -1,0 +1,246 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CloneCompare</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .top-buttons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .top-buttons a {
+      text-decoration: none;
+      padding: 8px 12px;
+      margin-left: 10px;
+      background-color: #3498db;
+      color: white;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .top-buttons a:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top-buttons">
+      <a href="contact.html">Contact</a>
+      <a href="report.html">Report</a>
+    </div>
+    <h1><p>🔍 CloneCompare</h1></p>
+    <p>Compare original and suspect websites for possible cloning</p>
+    <p>It is mainly used for <strong style="color:red">Government</strong>,<strong style="color:red">Banks</strong>, <strong style="color:red">Marketing</strong> & <strong style="color:red"> Scial Media Websites</strong></p>
+  </header>
+
+  <main>
+
+    <form id="checkForm">
+      <label for="url">Website URL:</label>
+      <input type="text" id="url" placeholder="abc.com, xyz.in..." required>
+      <button type="submit">Check</button>
+    </form>
+
+    <div id="result"></div>
+  </main>
+
+  <div id="cookie-banner" class="cookie-banner">
+  <p>We store and access personal data, like browsing data or unique identifiers, on your device. Selecting Accept enables tracking technologies to support the purposes shown under we and our partners process data to provide. If trackers are disabled, some content and ads you see may not be as relevant to you. You can resurface this menu to change your choices or withdraw consent at any time by clicking the Manage Preferences link on the bottom of the webpage.
+     Your choices will have effect within our Website. For more details, refer to our Privacy Policy. <a href="/privacy-policy" target="_blank">Privacy Policy</a></p>
+  <div class="cookie-buttons">
+    <button id="accept-cookies">Accept</button>
+    <button id="decline-cookies">Decline</button>
+  </div>
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+-->
+
+<!--23052025
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CloneCompare</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .top-buttons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .top-buttons a {
+      text-decoration: none;
+      padding: 8px 12px;
+      margin-left: 10px;
+      background-color: #3498db;
+      color: white;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .top-buttons a:hover {
+      background-color: #2980b9;
+    }
+  </style>
+  
+</head>
+<body>
+  <header>
+    <div class="top-buttons">
+      <a href="contact.html">Contact</a>
+      <a href="report.html">Report</a>
+    </div>
+    <h1>🔍 CloneCompare</h1>
+    <p>Compare original and suspect websites for possible cloning</p>
+    <p>It is mainly used for <strong style="color:red">Government</strong>, <strong style="color:red">Banks</strong>, <strong style="color:red">Marketing</strong> & <strong style="color:red">Social Media Websites</strong></p>
+  </header>
+
+  <main>
+    <form id="checkForm">
+      <label for="url">Website URL:</label>
+      <input type="text" id="url" placeholder="abc.com, xyz.in..." required>
+      <button type="submit">Check</button>
+    </form>
+    <div id="result"></div>
+  </main>
+
+  <div id="cookie-banner" class="cookie-banner">
+    <p>We store and access personal data, like browsing data or unique identifiers, on your device. Selecting Accept enables tracking technologies to support the purposes shown under we and our partners process data to provide. If trackers are disabled, some content and ads you see may not be as relevant to you. You can resurface this menu to change your choices or withdraw consent at any time by clicking the Manage Preferences link on the bottom of the webpage. Your choices will have effect within our Website. For more details, refer to our <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</p>
+    <div class="cookie-buttons">
+      <button id="accept-cookies">Accept</button>
+      <button id="decline-cookies">Decline</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('checkForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const inputUrl = document.getElementById('url').value.trim().toLowerCase();
+      const resultDiv = document.getElementById('result');
+
+      const knownOriginalDomains = [
+        'www.facebook.com', 'www.google.com', 'www.apple.com', 'www.microsoft.com', 'www.amazon.com',
+        'www.flipkart.com', 'netflix.com', 'www.bewakoof.com', 'www.twitter.com', 'www.linkedin.com',
+        'www.instagram.com', 'www.paypal.com', 'www.cybercrime.gov.in', 'www.hdfcbank.com',
+        'www.icicibank.com', 'www.bankofamerica.com', 'i4c.mha.gov.in', 'www.mha.gov.in',
+        'www.axisbank.com', 'www.yesbank.in', 'www.indianbank.in', 'www.bankofindia.co.in',
+        'www.boiusa.com', 'myaadhaar.uidai.gov.in', 'www.onlinesbi.sbi', 'www.myntra.com', 'www.meesho.com'
+      ];
+
+      const suspiciousPatterns = ['-', 'login', 'secure', 'verify', 'account', 'update', 'support', 'webscr', 'banking'];
+      const isSuspicious = suspiciousPatterns.some(pattern => inputUrl.includes(pattern));
+
+      const normalizePhishingTricks = (url) =>
+        url.replace(/0/g, 'o')
+           .replace(/1/g, 'l')
+           .replace(/i/g, 'l')
+           .replace(/3/g, 'e')
+           .replace(/5/g, 's')
+           .replace(/7/g, 't')
+           .replace(/@/g, 'a');
+
+      const normalizedInput = normalizePhishingTricks(inputUrl);
+
+      const extractBase = (url) => {
+        return url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('.')[0];
+      };
+
+      const inputBase = extractBase(normalizedInput);
+      const exactMatch = knownOriginalDomains.includes(inputUrl);
+      const tldMatch = knownOriginalDomains.find(domain => extractBase(domain) === inputBase && domain !== inputUrl);
+      const looksLike = knownOriginalDomains.find(domain => getSimilarity(domain, normalizedInput) > 0.7);
+
+      let message = '';
+      if (exactMatch) {
+        message = `<p style="color:green;">✅ <strong>${inputUrl}</strong> is a known original website.</p>`;
+      } else if (tldMatch) {
+        message = `<p>⚠️ <strong style="color:red">${inputUrl}</strong> uses a different domain extension but matches the base name of <strong>${tldMatch}</strong>. It may be a cloned or fake version of the original website.</p>`;
+      } else if (isSuspicious || looksLike) {
+        message = `<p style="color:red;">⚠️ <strong>${inputUrl}</strong> looks suspicious and may be a fake or phishing site.`;
+        if (looksLike) {
+          message += `<br>🔍 This website is similar to: <strong>${looksLike}</strong>`;
+        }
+        message += `</p>`;
+      } else {
+        message = `<p style="color:red;">❗ <strong>${inputUrl}</strong> is not recognized. It may be a cloned website. Proceed with caution.</p>`;
+      }
+      resultDiv.innerHTML = message;
+    });
+
+    // Dummy similarity checker (replace with real logic if needed)
+    function getSimilarity(domain1, domain2) {
+      return domain1.split('.')[0] === domain2.split('.')[0] ? 0.8 : 0;
+    }
+
+    // Cookie buttons
+    document.getElementById('accept-cookies').addEventListener('click', () => {
+      document.getElementById('cookie-banner').style.display = 'none';
+    });
+    document.getElementById('decline-cookies').addEventListener('click', () => {
+      document.getElementById('cookie-banner').style.display = 'none';
+    });
+  </script>
+</body>
+</html>
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloneCompare</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="top-buttons">
+      <a href="contact.html">Contact</a>
+      <a href="report.html">Report</a>
+    </div>
+    <h1>🔎 CloneCompare</h1>
+    <p>Compare original and suspect websites for possible cloning</p>
+    <small>It is mainly used for <span class="highlight">Government, Banks, Marketing & Social Media Websites</span></small>
+  </header>
+
+  <main>
+    <form id="checkForm">
+      <label for="urlInput">Website URL:</label>
+      <input type="text" id="urlInput" required placeholder="e.g. www.abcxyz.com" disabled/>
+      <button type="submit">Check</button>
+    </form>
+
+    <div id="result"></div>
+  </main>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookie-banner">
+    <p>
+      We use cookies and similar technologies to enhance your browsing experience and analyze website traffic. 
+      By clicking <strong>Accept</strong>, you consent to our use of cookies. 
+      See our <a href="privacy.html" target="_blank">Privacy Policy</a> for details.
+    </p>
+    <div>
+      <button id="accept-cookies">Accept</button>
+      <button id="decline-cookies">Decline</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

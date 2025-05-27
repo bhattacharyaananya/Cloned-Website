@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="contact.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+.top-buttons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .top-buttons a {
+      text-decoration: none;
+      padding: 8px 12px;
+      margin-left: 10px;
+      background-color: #3498db;
+      color: white;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .top-buttons a:hover {
+      background-color: #2980b9;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-buttons", align="right">
+      <a href="index.html">Home</a>
+      <a href="report.html">Report</a>
+    </div>
+
+  <div class="container">
+    
+    <form id="contactForm">
+
+    <h1>Contact Us</h1>
+    <p>If you have any questions, feel free to reach out to us using the form below.</p>
+
+    <form action="thankyou.html" method="POST">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your name" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" placeholder="Type your message..." rows="5" required></textarea>
+
+      <button type="submit">Submit Report</button>
+      <button type="button" id="downloadCsv">Download Contact Details</button>
+
+    </form>
+  </div>
+
+<script>
+  // Save form data to localStorage
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent actual navigation
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    const entry = { name, email, message, timestamp: new Date().toISOString() };
+
+    let contacts = JSON.parse(localStorage.getItem('contactEntries') || '[]');
+    contacts.push(entry);
+    localStorage.setItem('contactEntries', JSON.stringify(contacts));
+
+    alert('Message stored locally!');
+    this.reset();
+  });
+
+  // Download CSV from localStorage
+  document.getElementById('downloadCsv').addEventListener('click', function() {
+    const contacts = JSON.parse(localStorage.getItem('contactEntries') || '[]');
+
+    if (contacts.length === 0) {
+      alert('No data to download.');
+      return;
+    }
+
+    const headers = Object.keys(contacts[0]);
+    const csvRows = [
+      headers.join(','),
+      ...contacts.map(row =>
+        headers.map(field => `"${String(row[field]).replace(/"/g, '""')}"`).join(',')
+      )
+    ];
+
+    const csvData = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+    const csvUrl = URL.createObjectURL(csvData);
+    const a = document.createElement('a');
+    a.href = csvUrl;
+    a.download = 'contact_data.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  });
+</script>
+
+
+
+</body>
+</html>
